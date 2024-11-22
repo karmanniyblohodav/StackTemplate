@@ -90,11 +90,10 @@ Stack<T>& Stack<T>::operator=(const Stack<T>& other)
 {
     if (this != &other)
     {
-        delete[] data;
-        capacity = other.capacity;
-        size = other.size;
-        data = new T[capacity];
-        std::copy(other.data, other.data + size, data);
+        Stack<T> temp(other);
+        std::swap(capacity, temp.capacity);
+        std::swap(size, temp.size);
+        std::swap(data, temp.data);
     }
     return *this;
 }
@@ -104,14 +103,9 @@ Stack<T>& Stack<T>::operator=(Stack<T>&& other) noexcept
 {
     if (this != &other)
     {
-        delete[] data;
-        capacity = other.capacity;
-        size = other.size;
-        data = other.data;
-
-        other.data = nullptr;
-        other.size = 0;
-        other.capacity = 0;
+        std::swap(capacity, other.capacity);
+        std::swap(size, other.size);
+        std::swap(data, other.data);
     }
     return *this;
 }
@@ -150,7 +144,7 @@ void Stack<T>::Pop()
 {
     if (IsEmpty())
     {
-        throw std::underflow_error("Стек пуст!");
+        throw std::out_of_range("Стек пуст!");
     }
     --size;
 }
@@ -160,7 +154,7 @@ const T& Stack<T>::Peek() const
 {
     if (IsEmpty())
     {
-        throw std::underflow_error("Стек пуст!");
+        throw std::out_of_range("Стек пуст!");
     }
     return data[size - 1];
 }

@@ -39,10 +39,19 @@ public:
     std::string ToString() const;
 };
 
+/**
+ * @brief Конструктор по умолчанию.
+ * Создает стек с начальной емкостью 10 элементов.
+ */
 template<typename T>
 Stack<T>::Stack()
     : capacity{ 10 }, size{ 0 }, data{ new T[capacity] } {}
 
+/**
+ * @brief Конструктор с указанием размера.
+ * @param size Начальная емкость стека. Должна быть положительным числом.
+ * @throw std::logic_error Если размер меньше или равен нулю.
+ */
 template<typename T>
 Stack<T>::Stack(const int size)
 {
@@ -56,6 +65,10 @@ Stack<T>::Stack(const int size)
     this->data = new T[capacity];
 }
 
+/**
+ * @brief Конструктор с инициализацией через список.
+ * @param list Список инициализации для заполнения стека.
+ */
 template<typename T>
 Stack<T>::Stack(const std::initializer_list<T> list)
     : capacity{ list.size() }, size{ list.size() }, data{ new T[capacity] }
@@ -63,6 +76,10 @@ Stack<T>::Stack(const std::initializer_list<T> list)
     std::copy(list.begin(), list.end(), data);
 }
 
+/**
+ * @brief Конструктор копирования.
+ * @param other Стек, из которого копируются данные.
+ */
 template<typename T>
 Stack<T>::Stack(const Stack& other)
     : capacity{ other.capacity }, size{ other.size }, data{ new T[other.capacity] }
@@ -70,6 +87,11 @@ Stack<T>::Stack(const Stack& other)
     std::copy(other.data, other.data + other.size, data);
 }
 
+/**
+ * @brief Конструктор перемещения.
+ * Перемещает данные из другого стека, не копируя их.
+ * @param other Стек, из которого перемещаются данные.
+ */
 template<typename T>
 Stack<T>::Stack(Stack&& other) noexcept
     : capacity{ other.capacity }, size{ other.size }, data{ other.data }
@@ -79,12 +101,21 @@ Stack<T>::Stack(Stack&& other) noexcept
     other.capacity = 0;
 }
 
+/**
+ * @brief Деструктор.
+ * Освобождает память, выделенную для хранения элементов стека.
+ */
 template<typename T>
 Stack<T>::~Stack()
 {
     delete[] data;
 }
 
+/**
+ * @brief Оператор присваивания копированием.
+ * @param other Стек, из которого копируются данные.
+ * @return Ссылка на текущий стек.
+ */
 template<typename T>
 Stack<T>& Stack<T>::operator=(const Stack<T>& other)
 {
@@ -98,6 +129,11 @@ Stack<T>& Stack<T>::operator=(const Stack<T>& other)
     return *this;
 }
 
+/**
+ * @brief Оператор присваивания перемещением.
+ * @param other Стек, из которого перемещаются данные.
+ * @return Ссылка на текущий стек.
+ */
 template<typename T>
 Stack<T>& Stack<T>::operator=(Stack<T>&& other) noexcept
 {
@@ -110,6 +146,11 @@ Stack<T>& Stack<T>::operator=(Stack<T>&& other) noexcept
     return *this;
 }
 
+/**
+ * @brief Проверяет корректность индекса.
+ * @param i Индекс для проверки.
+ * @throw std::out_of_range Если индекс выходит за пределы стека.
+ */
 template<typename T>
 void Stack<T>::CheckIndex(const size_t i) const
 {
@@ -119,6 +160,11 @@ void Stack<T>::CheckIndex(const size_t i) const
     }
 }
 
+/**
+ * @brief Проверяет корректность индекса.
+ * @param i Индекс для проверки.
+ * @throw std::out_of_range Если индекс выходит за пределы стека.
+ */
 template<typename T>
 void Stack<T>::Expand()
 {
@@ -129,6 +175,10 @@ void Stack<T>::Expand()
     data = newData;
 }
 
+/**
+ * @brief Добавляет элемент в стек.
+ * @param value Значение, которое нужно добавить.
+ */
 template<typename T>
 void Stack<T>::Push(const T& value)
 {
@@ -139,6 +189,10 @@ void Stack<T>::Push(const T& value)
     data[size++] = value;
 }
 
+/**
+ * @brief Удаляет верхний элемент из стека.
+ * @throw std::out_of_range Если стек пуст.
+ */
 template<typename T>
 void Stack<T>::Pop()
 {
@@ -149,6 +203,11 @@ void Stack<T>::Pop()
     --size;
 }
 
+/**
+ * @brief Возвращает верхний элемент стека.
+ * @return Ссылка на верхний элемент.
+ * @throw std::out_of_range Если стек пуст.
+ */
 template<typename T>
 const T& Stack<T>::Peek() const
 {
@@ -159,18 +218,30 @@ const T& Stack<T>::Peek() const
     return data[size - 1];
 }
 
+/**
+ * @brief Проверяет, пуст ли стек.
+ * @return true, если стек пуст, иначе false.
+ */
 template<typename T>
 bool Stack<T>::IsEmpty() const noexcept
 {
     return size == 0;
 }
 
+/**
+ * @brief Возвращает количество элементов в стеке.
+ * @return Текущее количество элементов.
+ */
 template<typename T>
 size_t Stack<T>::GetSize() const
 {
     return size;
 }
 
+/**
+ * @brief Возвращает строковое представление содержимого стека.
+ * @return Строка, содержащая элементы стека через запятую.
+ */
 template<typename T>
 std::string Stack<T>::ToString() const
 {

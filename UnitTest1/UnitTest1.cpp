@@ -58,5 +58,33 @@ namespace SolverTests
             auto func = [&]() { stack.Peek(); };
             Assert::ExpectException<std::out_of_range>(func, L"Должно выбрасываться исключение std::out_of_range при попытке peek на пустом стеке.");
         }
+
+        TEST_METHOD(IntAreEqual_SameStacks_Success)
+        {
+            Stack<int> stack1{ 0, 1 };
+            Stack<int> stack2{ 0, 1 };
+            
+            Assert::AreEqual(stack1.ToString(), stack2.ToString(),
+                L"Стек stack1 и stack2 должны быть равны по содержимому.");
+        }
+
+        TEST_METHOD(StringAreEqual_SameStacks_Success)
+        {
+            Stack<std::string> stack1{ "0", "1" };
+            Stack<std::string> stack2{ "0", "1" };
+
+            Assert::AreEqual(stack1.ToString(), stack2.ToString(),
+                L"Стек stack1 и stack2 должны быть равны по содержимому.");
+        }
+
+        TEST_METHOD(PairAreEqual_SameStacks_Success)
+        {
+            std::pair<int, int> a(0, 0);
+            Stack<std::pair<int, int>> stack1{ a, a };
+            Stack<std::pair<int, int>> stack2{ a, a };
+
+            Assert::AreEqual(stack1.ToString(), stack2.ToString(),
+                L"Стек stack1 и stack2 должны быть равны по содержимому.");
+        }
     };
 }

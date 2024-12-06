@@ -27,14 +27,15 @@ public:
 
     Stack& operator=(const Stack& other);
     Stack& operator=(Stack&& other) noexcept;
+    void Swap(Stack<T>& other) noexcept;
 
-    const T& operator[](size_t i) const;
-    T& operator[](size_t i);
+    const T operator[](size_t i) const;
+    T operator[](size_t i);
 
     size_t GetSize() const;
     void Push(const T& value);
     void Pop();
-    const T& Peek() const;
+    const T Peek() const;
     bool IsEmpty() const noexcept;
     std::string ToString() const;
 };
@@ -111,6 +112,14 @@ Stack<T>::~Stack()
     delete[] data;
 }
 
+template<typename T>
+inline void Stack<T>::Swap(Stack<T>& other) noexcept
+{
+    std::swap(other.capacity, this->capacity);
+    std::swap(other.data, this->data);
+    std::swap(other.size, this->size);
+}
+
 /**
  * @brief Оператор присваивания копированием.
  * @param other Стек, из которого копируются данные.
@@ -166,14 +175,17 @@ void Stack<T>::CheckIndex(const size_t i) const
  * @throw std::out_of_range Если индекс выходит за пределы стека.
  */
 template<typename T>
-void Stack<T>::Expand()
+inline void Stack<T>::Expand()
 {
-    capacity *= 2;
-    T* newData = new T[capacity];
-    std::copy(data, data + size, newData);
-    delete[] data;
-    data = newData;
+    Stack temp(this->size);
+    for (size_t i = 0; i < this->size; ++i)
+    {
+        temp.data[i] = this->data[i];
+    }
+
+    this->Swap(temp);
 }
+
 
 /**
  * @brief Добавляет элемент в стек.
@@ -209,7 +221,7 @@ void Stack<T>::Pop()
  * @throw std::out_of_range Если стек пуст.
  */
 template<typename T>
-const T& Stack<T>::Peek() const
+const T Stack<T>::Peek() const
 {
     if (IsEmpty())
     {

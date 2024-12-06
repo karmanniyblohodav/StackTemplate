@@ -1,7 +1,7 @@
 #include <iostream>
 #include "..\StackTemplate\StackTemplate.h"
 int main() {
-    Stack<int> stack({ 1, 2, 3, 4, 5 });
+    Stack<int> stack({ 1, 2, 3, 4, 7 });
     std::cout << "Начальный стек: " << stack.ToString() << std::endl;
 
     stack.Push(6);
